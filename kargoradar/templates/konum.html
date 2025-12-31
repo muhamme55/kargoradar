@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Şubelerimizin Konumu</h2>
+
+    <div id="harita" style="height: 500px; width: 100%; border-radius: 10px;"></div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    var map = L.map('harita').setView([39.9208, 32.8541], 6); 
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+    }).addTo(map);
+
+    var subeler = [
+        {
+            isim: "İstanbul Merkez Şube",
+            koordinat: [41.0082, 28.9784]
+        },
+        {
+            isim: "Ankara Şube",
+            koordinat: [39.9208, 32.8541]
+        },
+        {
+            isim: "İzmir Şube",
+            koordinat: [38.4237, 27.1428]
+        },
+        {
+            isim:"Gümüşhane Şube",
+            koordinat: [40.4600, 39.4800]
+        },
+        {
+            isim:"Artvin Hopa Şube",
+            koordinat: [41.390182,41.423599]
+        },
+
+    ];
+
+    subeler.forEach(function(sube) {
+        L.marker(sube.koordinat)
+            .addTo(map)
+            .bindPopup("<b>" + sube.isim + "</b>");
+    });
+</script>
+
+{% endblock %}

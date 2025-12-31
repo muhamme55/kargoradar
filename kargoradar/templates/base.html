@@ -1,0 +1,198 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Kargo Takip - Ana Sayfa{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'stil.css' %}">
+
+    8
+    {% block extra_css %}{% endblock %}
+</head>
+<body>  
+    
+    <div class="bg-light py-2 border-bottom d-none d-md-block">
+        <div class="container d-flex justify-content-between align-items-center text-muted small">
+            <div>
+                <a href="{% url 'konum' %}" class="text-decoration-none text-secondary">
+                    <i class="bi bi-geo-alt-fill me-1"></i> Konumlar
+                </a>
+            </div>
+            <div class="d-flex gap-3">
+                <a href="#" class="text-decoration-none text-secondary">Türkiye - Türkçe <i class="bi bi-chevron-down"></i></a>
+                <a href="{% url 'about' %}" class="text-decoration-none text-secondary">KR Hakkında <i class="bi bi-box-arrow-up-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm sticky-top">
+        <div class="container">
+            <a href="{% url 'home' %}" class="navbar-brand fw-bold fs-3 text-brown">
+                <i class="bi bi-box-seam-fill text-gold"></i> KR
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-semibold">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#takip-tab" onclick="odaklaTakip(event)">Gönderi Takibi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'isletme' %}">İşletme Çözümleri</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'support' %}">Destek</a>
+                    </li>
+                </ul>
+                <div class="d-flex gap-2 align-items-center">
+                    {% if user.is_authenticated %}
+                        <div class="dropdown">
+                            <button class="btn btn-outline-dark rounded-pill px-3 fw-bold dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle me-1"></i> {{ user.username }}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                                <li>
+                                    <a class="dropdown-item py-2" href="{% url 'kargoekleme:panel_anasayfa' %}">
+                                        <i class="bi bi-speedometer2 me-2"></i> Yönetim Paneli
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form action="{% url 'accounts:logout' %}" method="post" class="px-2">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm w-100 py-2">
+                                            <i class="bi bi-box-arrow-right me-1"></i> Çıkış Yap
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'accounts:login' %}" class="btn btn-gold rounded-pill px-4 fw-bold shadow-sm">
+                            Oturum Aç <i class="bi bi-chevron-right small ms-1"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+{% block content %}
+<section class="hero-section position-relative overflow-hidden bg-white py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7 text-white z-index-2">
+                <h1 class="display-4 fw-bold mb-4 text-black">Hızla İlerleyin.</h1>
+                <div class="d-flex gap-4 mb-3 border-bottom border-secondary pb-2 sekme-container">
+                    <div class="sekme-oge aktif cursor-pointer pb-2 text-dark">
+                        Takip Edin <i class="bi bi-chevron-down small"></i>
+                    </div>
+                </div>
+                
+                <div class="bg-transparent mt-4">
+                    <div class="takip-formu" id="takip-tab">
+                        <form method="post" action="{% url 'kargoyonetim:locations' %}" class="row g-2">
+                            {% csrf_token %}
+                            <div class="col-md-9">
+                                <textarea id="takip-input" class="form-control form-control-lg py-3" name="tracking_number" rows="1" placeholder="Takip Numarası ya da InfoNotice®" required></textarea>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-gold btn-lg w-100 py-3 fw-bold rounded-1 text-white">Takip Edin <i class="bi bi-arrow-right"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-5 d-none d-lg-block text-end position-relative">
+                <img src="{% static 'img/kurye.png' %}" alt="Kargo Görevlisi" class="img-fluid mb-0" style="width: auto; height: auto;">
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+    <section class="border-top bg-light py-5">
+        <div class="container">
+            <div class="row text-center g-4">
+                <div class="col-md-3">
+                    <i class="bi bi-truck fs-1 text-gold"></i>
+                    <h3 class="fw-bold mt-2">150+</h3>
+                    <p class="text-muted">Dağıtım Aracı</p>
+                </div>
+                <div class="col-md-3">
+                    <i class="bi bi-globe fs-1 text-gold"></i>
+                    <h3 class="fw-bold mt-2">81</h3>
+                    <p class="text-muted">Hizmet Noktası</p>
+                </div>
+                <div class="col-md-3">
+                    <i class="bi bi-people fs-1 text-gold"></i>
+                    <h3 class="fw-bold mt-2">5000+</h3>
+                    <p class="text-muted">Mutlu Müşteri</p>
+                </div>
+                <div class="col-md-3">
+                    <i class="bi bi-shield-check fs-1 text-gold"></i>
+                    <h3 class="fw-bold mt-2">%100</h3>
+                    <p class="text-muted">Güvenli Teslimat</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white pt-5 pb-3">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="fw-bold text-gold mb-3">KR KARGO</h4>
+                    <p class="text-secondary small">Paketlerinizi güvenle taşıyor, lojistik süreçlerinizi dijital çözümlerimizle hızlandırıyoruz. Türkiye'nin her noktasına güvenli ulaşım.</p>
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="#" class="text-white"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-twitter-x"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3">Hızlı Linkler</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="{% url 'home' %}" class="text-secondary text-decoration-none">Ana Sayfa</a></li>
+                        <li><a href="{% url 'about' %}" class="text-secondary text-decoration-none">Hakkımızda</a></li>
+                        <li><a href="{% url 'support' %}" class="text-secondary text-decoration-none">Müşteri Desteği</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h6 class="fw-bold mb-3">Hizmetlerimiz</h6>
+                    <ul class="list-unstyled small text-secondary">
+                        <li>Yurt İçi Gönderi</li>
+                        <li>İşletme Çözümleri</li>
+                        <li>Express Kargo</li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h6 class="fw-bold mb-3">İletişim</h6>
+                    <p class="text-secondary small mb-1"><i class="bi bi-envelope me-2"></i> info@krkargo.com</p>
+                    <p class="text-secondary small"><i class="bi bi-telephone me-2"></i> 444 0 575</p>
+                </div>
+            </div>
+            <hr class="mt-5 border-secondary">
+            <p class="text-center text-secondary small">&copy; 2024 KR Kargo - Tüm Hakları Saklıdır.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function odaklaTakip(event) {
+            const inputField = document.getElementById('takip-input');
+            const targetArea = document.getElementById('takip-tab');
+            if (targetArea) {
+                event.preventDefault(); 
+                targetArea.scrollIntoView({ behavior: 'smooth' });
+                setTimeout(() => { inputField.focus(); }, 600);
+            }
+        }
+    </script>
+</body>
+</html>

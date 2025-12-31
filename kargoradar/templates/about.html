@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="about-container" style="padding: 60px 0; background-color: #f8f8f8;">
+    <div class="about-icerik" style="width: 80%; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+
+        <h1 style="font-size: 32px; margin-bottom: 20px; font-weight: 700; color: #333;">
+            KargoRadar Hakkında
+        </h1>
+
+        <p style="font-size: 18px; line-height: 1.6; color: #444;">
+            KargoRadar, kullanıcılarına hızlı, güvenilir ve modern bir kargo takip deneyimi sunmak için
+            geliştirilmiş bir platformdur. Misyonumuz, Türkiye’deki lojistik süreçlerini dijitalleştirerek,
+            hem bireysel kullanıcıların hem de işletmelerin gönderi yönetimini kolaylaştırmaktır.
+        </p>
+
+        <h2 style="font-size: 26px; margin-top: 30px; color: #333;">
+            Vizyonumuz
+        </h2>
+        <p style="font-size: 18px; line-height: 1.6;">
+            Teknolojiyi kullanarak taşımacılığı daha hızlı, daha izlenebilir ve daha şeffaf hale getirmek.
+        </p>
+
+        <h2 style="font-size: 26px; margin-top: 30px; color: #333;">
+            Hizmetlerimiz
+        </h2>
+
+        <ul style="font-size: 18px; line-height: 1.8; margin-left: 20px;">
+            <li>Gerçek zamanlı kargo takibi</li>
+            <li>Gönderi teslimat süresi tahmini</li>
+            <li>İşletmeler için profesyonel çözüm paketleri</li>
+            <li>SMS / E-posta bilgilendirme</li>
+            <li>Harita üzerinden konum takibi</li>
+        </ul>
+
+        <h2 style="font-size: 26px; margin-top: 30px; color: #333;">
+            Ekibimiz
+        </h2>
+
+        <p style="font-size: 18px; line-height: 1.6;">
+            Yazılım geliştiriciler, tasarımcılar ve lojistik uzmanlarından oluşan dinamik bir ekiple
+            platformumuzu sürekli geliştiriyoruz.
+        </p>
+
+        <img src="{% static 'images/teamwork.png' %}" 
+             alt="Ekibimiz"
+             style="width: 100%; max-width: 600px; display: block; margin: 40px auto;">
+
+    </div>
+</section>
+
+{% endblock %}

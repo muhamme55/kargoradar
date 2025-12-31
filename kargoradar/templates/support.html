@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h2 class="fw-bold mb-4 text-center text-black">Destek Talebi Gönder</h2>
+            <p class="text-center text-muted mb-4">
+                Herhangi bir sorun veya sorunuz için aşağıdaki formu doldurabilirsiniz.
+            </p>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" action="{% url 'support' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name" class="form-label">Adınız Soyadınız</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Adınızı girin" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-posta Adresiniz</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="E-posta adresinizi girin" required>
+                </div>
+                <div class="mb-3">
+                    <label for="subject" class="form-label">Konu</label>
+                    <input type="text" class="form-control" id="subject" name="subject" placeholder="Konu girin" required>
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Mesajınız</label>
+                    <textarea class="form-control" id="message" name="message" rows="5" placeholder="Mesajınızı yazın" required></textarea>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-gold fw-bold px-5 py-2">Gönder <i class="bi bi-envelope-fill"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
