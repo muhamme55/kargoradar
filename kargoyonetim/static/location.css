@@ -1,0 +1,166 @@
+:root {
+    --KR-altin: #ffb500;
+    --KR-kahve: #351c15;
+    --gri-acik: #e9ecef;
+    --gri-koyu: #6c757d;
+    --yesil-basari: #28a745;
+}
+
+.tracking-card {
+    border: none;
+    border-top: 5px solid var(--KR-altin) !important;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    overflow: hidden;
+    background-color: white;
+    padding: 2rem;
+}
+
+.info-box {
+    background: linear-gradient(135deg, var(--KR-altin) 0%, #ffc107 100%);
+    color: black;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+
+.progress-track-container {
+    padding: 20px 0;
+}
+
+.progress-track {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    margin: 40px 0;
+    padding: 0;
+}
+
+.progress-track::before {
+    content: '';
+    position: absolute;
+    top: 80px; 
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--gri-acik);
+    z-index: 0;
+}
+
+.step-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 25%;
+}
+
+.step-icon {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border: 3px solid var(--gri-acik);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: #adb5bd;
+    transition: all 0.4s ease;
+    margin: 0 auto 12px;
+}
+
+.step-text {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gri-koyu);
+    white-space: nowrap;
+}
+
+.step-wrapper.completed .step-icon {
+    background-color: var(--KR-altin);
+    border-color: var(--KR-altin);
+    color: var(--KR-kahve);
+}
+
+.step-wrapper.completed .step-text {
+    color: var(--KR-kahve);
+}
+
+.step-wrapper.active .step-icon {
+    background-color: var(--yesil-basari);
+    border-color: var(--yesil-basari);
+    color: white;
+    box-shadow: 0 0 15px rgba(40, 167, 69, 0.4);
+}
+
+.step-wrapper.active .step-text {
+    color: var(--yesil-basari);
+}
+
+.timeline-container {
+    position: relative;
+    padding-left: 10px;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 35px;
+    border-left: 2px solid var(--gri-acik);
+    padding-bottom: 30px;
+}
+
+/* Timeline Noktaları */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -9px;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid var(--KR-altin);
+    z-index: 2;
+}
+
+.timeline-item.last {
+    border-left: 2px solid transparent;
+}
+
+.status-badge {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.text-brown { color: var(--KR-kahve); }
+.btn-gold { 
+    background-color: var(--KR-altin); 
+    color: var(--KR-kahve); 
+    border: none;
+}
+.btn-gold:hover { background-color: #e5a200; }
+
+@media (max-width: 768px) {
+    .progress-track::before { top: 20px; }
+    .step-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    .step-text {
+        font-size: 0.65rem;
+    }
+    .timeline-item {
+        padding-left: 25px;
+    }
+}

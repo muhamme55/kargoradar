@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Yeni Kargo Kaydı - KargoRadar{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8"> 
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body p-5">
+                    
+                    <div class="text-center mb-4">
+                        <i class="bi bi-box-seam text-warning display-3"></i>
+                        <h2 class="fw-bold mt-3">Yeni Kargo Kaydı</h2>
+                        <p class="text-muted">Lütfen gönderici ve alıcı bilgilerini eksiksiz doldurunuz.</p>
+                    </div>
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6 border-end">
+                                <h5 class="text-primary mb-3"><i class="bi bi-person-up"></i> Gönderici Bilgileri</h5>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold">Ad Soyad</label>
+                                    <input type="text" name="sender_name" class="form-control" placeholder="Adınız Soyadınız" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold">Telefon</label>
+                                    <input type="tel" name="sender_phone" class="form-control" placeholder="05XX XXX XX XX" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold">Gönderen Adresi</label>
+                                    <textarea name="sender_address" class="form-control" rows="3" placeholder="Tam adresinizi yazınız..." required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <h5 class="text-success mb-3"><i class="bi bi-person-down"></i> Alıcı Bilgileri</h5>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold">Alıcı Ad Soyad</label>
+                                    <input type="text" name="receiver_name" class="form-control" placeholder="Alıcının Adı Soyadı" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold">Alıcı Telefon</label>
+                                    <input type="tel" name="receiver_phone" class="form-control" placeholder="05XX XXX XX XX" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold text-success">Alıcı E-posta (Bildirim İçin)</label>
+                                    <input type="email" name="receiver_email" class="form-control" placeholder="ornek@mail.com" required>
+                                    <div class="form-text" style="font-size: 0.7rem;">Kargo durum güncellemeleri bu adrese mail atılacaktır.</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold">Alıcı Adresi</label>
+                                    <textarea name="receiver_address" class="form-control" rows="3" placeholder="Teslimat adresini yazınız..." required></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-gold btn-lg fw-bold shadow-sm">
+                                Kargoyu Oluştur ve Takip No Üret <i class="bi bi-qr-code ms-1"></i>
+                            </button>
+                            <a href="{% url 'kargoekleme:panel_anasayfa' %}" class="btn btn-light text-secondary">
+                                <i class="bi bi-x-circle"></i> Vazgeç
+                            </a>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

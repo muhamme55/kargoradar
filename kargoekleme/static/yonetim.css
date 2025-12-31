@@ -1,0 +1,461 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+    line-height: 1.6;
+}
+
+
+.ust-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-sol {
+    display: flex;
+    align-items: center;
+}
+
+.logo-kutusu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-ikon {
+    width: 48px;
+    height: 48px;
+    background: #ffb500;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.logo-yazi h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #64748b;
+    margin: 0;
+}
+
+.logo-yazi p {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+}
+
+.header-sag {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.menu-buton, .tema-buton {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.menu-buton:hover, .tema-buton:hover {
+    background: #f1f5f9;
+}
+
+.profil-resim {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #e2e8f0;
+    cursor: pointer;
+}
+
+.ana-container {
+    display: grid;
+    grid-template-columns: 80px 1fr 300px;
+    min-height: calc(100vh - 81px);
+}
+
+.sidebar {
+    background: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    padding: 1.5rem 0;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    color: #64748b;
+    text-decoration: none;
+    border-radius: 12px;
+    margin: 0 12px;
+    transition: all 0.2s;
+}
+
+.menu-item:hover {
+    background: #f1f5f9;
+    color: #ffb500;
+}
+
+.menu-item.aktif {
+    background: #eff6ff;
+    color: #ffb500;
+}
+
+.menu-ikon {
+    font-size: 24px;
+}
+
+.ana-icerik {
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.sayfa-baslik {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.sayfa-baslik h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+.aciklama {
+    color: #64748b;
+    font-size: 14px;
+    max-width: 600px;
+}
+
+.baslik-butonlar {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background: #ffb500;
+    color: black;
+}
+
+.btn-primary:hover {
+    background: #ffb500;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #ffb500;
+    border: 1px solid #e2e8f0;
+}
+
+.btn-secondary:hover {
+    background: #eff6ff;
+}
+
+.istatistik-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.istatistik-kart {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.istatistik-kart:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.kart-icerik h3 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 4px;
+}
+
+.kart-icerik p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.kart-grafik {
+    width: 100px;
+    height: 40px;
+}
+
+.mini-grafik {
+    width: 100%;
+    height: 100%;
+}
+
+.tablo-container {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.tablo-baslik {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tablo-baslik h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.guncelleme {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.kargo-tablo {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.kargo-tablo thead {
+    background: #f8fafc;
+}
+
+.kargo-tablo th {
+    text-align: left;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    font-size: 12px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.kargo-tablo td {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #f1f5f9;
+    font-size: 14px;
+}
+
+.kargo-tablo tbody tr {
+    transition: background 0.2s;
+}
+
+.kargo-tablo tbody tr:hover {
+    background: #a1acbc;
+}
+
+.takip-no {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.durum-rozet {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.teslim-edildi {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.dagitimda {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.gecikme {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.detay-btn {
+    padding: 6px 16px;
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.detay-btn:hover {
+    background: #eff6ff;
+    border-color: #ffb500;
+}
+
+.sag-panel {
+    background: #ffffff;
+    border-left: 1px solid #e2e8f0;
+    padding: 2rem 1.5rem;
+}
+
+.panel-kart {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.panel-kart h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 1rem;
+}
+
+.bugun-istatistik {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.stat-item p {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 4px;
+}
+
+.stat-item h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.stat-divider {
+    height: 1px;
+    background: #e2e8f0;
+}
+
+body.dark-mode {
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+body.dark-mode .ust-header,
+body.dark-mode .sidebar,
+body.dark-mode .sag-panel,
+body.dark-mode .istatistik-kart,
+body.dark-mode .tablo-container {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+body.dark-mode .sayfa-baslik h2,
+body.dark-mode .kart-icerik h3,
+body.dark-mode .tablo-baslik h3 {
+    color: #f1f5f9;
+}
+
+@media (max-width: 1200px) {
+    .ana-container {
+        grid-template-columns: 80px 1fr;
+    }
+    
+    .sag-panel {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .ana-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .sidebar {
+        position: fixed;
+        left: -100%;
+        top: 81px;
+        height: calc(100vh - 81px);
+        z-index: 99;
+        transition: left 0.3s;
+    }
+    
+    .sidebar.active {
+        left: 0;
+    }
+    
+    .istatistik-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .sayfa-baslik {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .baslik-butonlar {
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .kargo-tablo {
+        font-size: 12px;
+    }
+    
+    .kargo-tablo th,
+    .kargo-tablo td {
+        padding: 0.75rem;
+    }
+}

@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'location.css' %}">
+
+<style>
+    .tracking-card { 
+        border-top: 5px solid #ffb500 !important; 
+        border-radius: 1rem;
+    }
+     
+    .timeline-container {
+        position: relative;
+        padding-left: 20px;
+    }
+    .timeline-item {
+        position: relative;
+        padding-left: 30px;
+        border-left: 2px solid #e9ecef;
+        padding-bottom: 25px;
+    }
+    .timeline-item::before { 
+        content: ''; 
+        position: absolute; 
+        left: -7px; 
+        top: 0; 
+        width: 12px; 
+        height: 12px; 
+        border-radius: 50%; 
+        background: #ffb500; 
+        border: 2px solid white;
+        box-shadow: 0 0 0 2px #ffb500;
+    }
+    .timeline-item.last { border-left: 2px solid transparent; }
+
+    .step-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #f8f9fa;
+        margin: 0 auto 10px;
+        transition: 0.3s;
+    }
+    .completed .step-icon {
+        background: #ffb500;
+        color: white;
+    }
+</style>
+
+<section class="py-5 bg-light" style="min-height: 90vh;">
+    <div class="container">
+        
+        {% if hata %}
+        <div class="row justify-content-center pt-5">
+            <div class="col-lg-6 text-center">
+                <div class="card shadow-sm border-0 rounded-4 p-5 bg-white">
+                    <div class="mb-4"><i class="bi bi-exclamation-triangle text-warning" style="font-size: 4rem;"></i></div>
+                    <h3 class="fw-bold text-dark mb-3">Kayıt Bulunamadı</h3>
+                    <p class="text-muted mb-4">{{ hata }}</p>
+                    <a href="/#takip-tab" class="btn btn-gold px-5 py-2 fw-bold rounded-pill">Tekrar Dene</a>
+                </div>
+            </div>
+        </div>
+
+        {% elif kargo %}
+        <div class="row mb-4 align-items-center">
+            <div class="col-md-6">
+                <h2 class="fw-bold text-brown mb-0">Gönderi Takibi</h2>
+                <p class="text-muted small">Kargonuzun anlık konum ve hareket bilgilerini buradan inceleyebilirsiniz.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <div class="bg-white d-inline-block px-4 py-2 rounded-pill shadow-sm border">
+                    <small class="text-muted text-uppercase fw-bold" style="font-size: 0.65rem;">Takip No:</small>
+                    <span class="fw-bold text-dark ms-1">#{{ kargo.tracking_number }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="tracking-card bg-white p-4 shadow-sm border-0 mb-4">
+                    
+                    <div class="progress-track-container mb-5 mt-4">
+                        <div class="progress-track d-flex justify-content-between text-center">
+                            <div class="step-wrapper completed w-25">
+                                <div class="step-icon"><i class="bi bi-box-seam"></i></div>
+                                <small class="fw-bold d-block">Hazırlandı</small>
+                            </div>
+                            <div class="step-wrapper {% if kargo.durum != 'Hazırlanıyor' %}completed{% endif %} w-25">
+                                <div class="step-icon"><i class="bi bi-truck"></i></div>
+                                <small class="fw-bold d-block">Yolda</small>
+                            </div>
+                            <div class="step-wrapper {% if kargo.durum == 'Şubede' or kargo.durum == 'Teslim Edildi' %}completed{% endif %} w-25">
+                                <div class="step-icon"><i class="bi bi-building-check"></i></div>
+                                <small class="fw-bold d-block">Şubede</small>
+                            </div>
+                            <div class="step-wrapper {% if kargo.durum == 'Teslim Edildi' %}completed{% endif %} w-25">
+                                <div class="step-icon"><i class="bi bi-check-lg"></i></div>
+                                <small class="fw-bold d-block">Teslim Edildi</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5 class="fw-bold mb-4"><i class="bi bi-clock-history me-2 text-warning"></i>Gönderi Hareketleri</h5>
+                    <div class="timeline-container">
+                        {% for log in kargo.hareketler.all %}
+                        <div class="timeline-item {% if forloop.last %}last{% endif %}">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <span class="d-block fw-bold text-dark small">{{ log.tarih|date:"d F Y" }}</span>
+                                    <span class="text-muted" style="font-size: 0.75rem;">{{ log.tarih|date:"H:i" }}</span>
+                                </div>
+                                <div class="col-md-9">
+                                    <h6 class="fw-bold mb-1">{{ log.yeni_durum }}</h6>
+                                    <p class="text-muted small mb-0">{{ log.aciklama }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-4">
+                            <img src="https://cdn-icons-png.flaticon.com/512/4076/4076402.png" width="80" class="opacity-25 mb-3">
+                            <p class="text-muted italic">Bu gönderi için henüz bir hareket kaydı girilmemiş.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+                    <div class="card-header bg-dark text-white py-3">
+                        <h6 class="mb-0 fw-bold"><i class="bi bi-info-circle me-2"></i>Sevkiyat Detayları</h6>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="d-flex mb-4">
+                            <div class="text-primary fs-4 me-3"><i class="bi bi-geo-alt-fill"></i></div>
+                            <div>
+                                <small class="text-muted d-block text-uppercase" style="font-size: 0.65rem;">Gönderici Şubesi</small>
+                                <span class="fw-bold small">{{ kargo.gonderen_detay }}</span>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-4">
+                            <div class="text-success fs-4 me-3"><i class="bi bi-pin-map-fill"></i></div>
+                            <div>
+                                <small class="text-muted d-block text-uppercase" style="font-size: 0.65rem;">Varış Noktası</small>
+                                <span class="fw-bold small text-dark">{{ kargo.alici_detay }}</span>
+                            </div>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <div class="bg-light p-3 rounded-3 mb-4">
+                            <div class="d-flex justify-content-between small mb-2">
+                                <span class="text-muted">Kayıt Tarihi:</span>
+                                <span class="fw-bold text-dark">{{ kargo.olusturulma_tarihi|date:"d.m.Y" }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between small">
+                                <span class="text-muted">Alıcı:</span>
+                                <span class="fw-bold text-dark">{{ kargo.alici }}</span>
+                            </div>
+                        </div>
+
+                        <a href="/#takip-tab" class="btn btn-outline-dark w-100 fw-bold rounded-pill">
+                            <i class="bi bi-arrow-repeat me-2"></i>Yeni Sorgulama
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card border-0 bg-warning bg-opacity-10 rounded-4">
+                    <div class="card-body p-4 text-center">
+                        <h6 class="fw-bold text-dark">Yardım İster Misiniz?</h6>
+                        <p class="small text-muted">Kargonuz gecikti mi? Hemen destek ekibimizle iletişime geçin.</p>
+                        <a href="{% url 'support' %}" class="btn btn-dark btn-sm px-4 rounded-pill">Destek Al</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

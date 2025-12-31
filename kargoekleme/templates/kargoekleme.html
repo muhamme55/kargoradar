@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}KargoRadar - Kurumsal Panel{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'yonetim.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="ana-container">
+    <aside class="sidebar">
+        <nav class="sidebar-menu">
+            <a href="{% url 'home' %}" class="menu-item aktif" title="Ana Sayfa">
+                <span class="menu-ikon">🏠</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="ana-icerik">
+        <div class="sayfa-baslik">
+            <div>
+                <h2>Kargo takibini kurumsal ölçekte yönetin</h2>
+                <p class="aciklama">Gerçek zamanlı takip, detaylı raporlar ve yetki bazlı yönetim paneli.</p>
+            </div>
+            <div class="baslik-butonlar" style="display: flex; gap: 10px;">
+                
+                {% if request.user.groups.all.0.name == "şube müdürü" or request.user.is_superuser %}
+                <a href="{% url 'kargoekleme:excel_indir' %}" class="btn btn-success" style="text-decoration: none; display: flex; align-items: center; gap: 8px; background-color: #10b981; color: white; padding: 10px 15px; border-radius: 6px;">
+                    <i class="bi bi-file-earmark-excel"></i> Excel Raporu
+                </a>
+                {% endif %}
+                
+                {% if perms.kargoyonetim.add_kargo or request.user.is_superuser %}
+                <a href="{% url 'kargoekleme:kargo_ekle_sayfasi' %}" class="btn btn-primary" style="text-decoration: none; display: inline-block; padding: 10px 15px; border-radius: 6px;">
+                    <i class="bi bi-plus-circle"></i> Yeni Kargo Oluştur
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="istatistik-grid">
+            <div class="istatistik-kart">
+                <div class="kart-icerik">
+                    <h3>{{ istatistikler.toplam }}</h3>
+                    <p>Toplam Kayıtlı Kargo</p>
+                </div>
+            </div>
+
+            <div class="istatistik-kart text-warning">
+                <div class="kart-icerik">
+                    <h3>{{ istatistikler.hazirlaniyor }}</h3>
+                    <p>Bekleyen Kargolar</p>
+                </div>
+            </div>
+
+            <div class="istatistik-kart text-success">
+                <div class="kart-icerik">
+                    <h3>{{ istatistikler.teslim_edilen }}</h3>
+                    <p>Teslim Edilenler</p>
+                </div>
+            </div>
+
+            <div class="istatistik-kart text-info">
+                <div class="kart-icerik">
+                    <h3>{{ istatistikler.yolda }}</h3>
+                    <p>Yoldaki Kargolar</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tablo-container">
+            <div class="tablo-baslik" style="display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
+                <div>
+                    <h3>Güncel Kargo Listesi</h3>
+                    <p class="guncelleme">Son güncelleme: {% now "d F Y" %}</p>
+                </div>
+
+                <form method="GET" action="{% url 'kargoekleme:panel_anasayfa' %}" style="display: flex; gap: 8px; flex-grow: 1; max-width: 400px;">
+                    <div style="position: relative; flex-grow: 1;">
+                        <i class="bi bi-search" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #888;"></i>
+                        <input type="text" name="q" value="{{ request.GET.q|default:'' }}" placeholder="Takip No ile Sorgula..." 
+                            style="width: 100%; padding: 8px 8px 8px 35px; border-radius: 6px; border: 1px solid #ddd; outline: none;">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="padding: 8px 15px;">Sorgula</button>
+                </form>
+            </div>
+
+            <table class="kargo-tablo">
+                <thead>
+                    <tr>
+                        <th>#Takip No</th>
+                        <th>Alıcı</th>
+                        <th>Durum</th>
+                        <th>Gönderi Tarihi</th>
+                        <th style="min-width: 250px;">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for kargo in kargolar %}
+                    <tr>
+                        <td class="takip-no">#{{ kargo.tracking_number }}</td>
+                        <td>{{ kargo.alici }}</td>
+                        <td>
+                            <span class="durum-rozet {% if kargo.durum == 'Hazırlanıyor' %}beklemede{% elif kargo.durum == 'Teslim Edildi' %}teslim-edildi{% else %}dagitimda{% endif %}">
+                                {{ kargo.durum }}
+                            </span>
+                        </td>
+                        <td>{{ kargo.olusturulma_tarihi|date:"d M Y" }}</td>
+                        <td>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                
+                                {% if perms.kargoyonetim.view_kargo or request.user.is_superuser %}
+                                <a href="{% url 'kargoekleme:kargo_detay' kargo.id %}" class="detay-btn" style="text-decoration: none; display: inline-block; background-color: goldenrod; color: white; padding: 5px 10px; border-radius: 4px;">
+                                    {% if perms.kargoyonetim.change_kargo %}
+                                        <i class="bi bi-pencil-square"></i> Detay / Düzenle
+                                    {% else %}
+                                        <i class="bi bi-eye"></i> Detayları Gör
+                                    {% endif %}
+                                </a>
+                                {% endif %}
+                                
+                                <form action="{% url 'kargoekleme:kargo_durum_guncelle' kargo.id %}" method="POST" style="display: flex; gap: 5px;">
+                                    {% csrf_token %}
+                                    <select name="yeni_durum" style="padding: 5px; border-radius: 4px; border: 1px solid #ddd; font-size: 0.85rem;">
+                                        <option value="Hazırlanıyor" {% if kargo.durum == 'Hazırlanıyor' %}selected{% endif %}>Hazırlanıyor</option>
+                                        <option value="Yolda" {% if kargo.durum == 'Yolda' %}selected{% endif %}>Yolda</option>
+                                        <option value="Şubede" {% if kargo.durum == 'Şubede' %}selected{% endif %}>Şubede</option>
+                                        <option value="Teslim Edildi" {% if kargo.durum == 'Teslim Edildi' %}selected{% endif %}>Teslim Edildi</option>
+                                    </select>
+                                    <button type="submit" class="btn-guncelle" style="background: #10b981; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                                        <i class="bi bi-check-lg"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">Kargo bulunamadı.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <aside class="sag-panel">
+        <div class="panel-kart text-center">
+            <h4>Aktif Kullanıcı</h4>
+            <p class="small text-muted mb-3">{{ request.user.username }}</p>
+            <div class="bugun-istatistik">
+                <div class="stat-item">
+                    <p>Toplam</p>
+                    <h3>{{ istatistikler.toplam }}</h3>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <p>Şubede</p>
+                    <h3>{{ istatistikler.subede }}</h3>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+</script>
+{% endblock %}
